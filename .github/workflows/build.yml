@@ -1,0 +1,36 @@
+name: PulseKey build for Windows
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: true
+
+    - name: Install dependencies using vcpkg
+      run: vcpkg install sdl2:x64-mingw-static yaml-cpp:x64-mingw-static
+      shell: cmd
+
+    - name: Build with CMake
+      run: |
+        cmake -B build -S . -G "MinGW Makefiles" -DCMAKE_TOOLCHAIN_FILE=c:/vcpkg/scripts/buildsystems/vcpkg.cmake
+        cmake --build build --config Release
+      shell: bash
+
+    - name: Copy build to release directory
+      run: |
+        mkdir release
+        cp build/pulsekey.exe release/pulsekey.exe
+        cp README.md release/README.md
+        cp config/games.yaml release/games.yaml
+      shell: bash
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: pulsekey_release
+        path: release/*
