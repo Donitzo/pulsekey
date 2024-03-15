@@ -8,6 +8,7 @@
 #include <map>
 #include <thread>
 #include <vector>
+#include <windows.h>
 
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_opengl.h"
@@ -382,7 +383,7 @@ int main(int argc, char* argv[]) {
 
     // Initialize SDL
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
-        printf("error initializing SDL: %s\n", SDL_GetError());
+        printf("Error initializing SDL: %s\n", SDL_GetError());
         return -1;
     }
 
@@ -432,6 +433,16 @@ int main(int argc, char* argv[]) {
 
     // Select the first game
     swap_game(game_names[0]);
+
+    // Create multimedia timer
+
+    HANDLE timer;
+    LARGE_INTEGER li;
+
+    if (!(timer = CreateWaitableTimer(NULL, TRUE, NULL))) {
+        printf("Error creating timer");
+        return -1;
+    }
 
     // Main loop
 
@@ -609,21 +620,27 @@ int main(int argc, char* argv[]) {
             // Inject input at a fraction of the current frame after the vertical sync
             if (game.INJECTION_FRAME_OFFSET_FRACTION > 0 && mode.refresh_rate > 0) {
                 float frame_microseconds = 1000000.0f / mode.refresh_rate;
-                Sint64 microseconds = (Sint64)(frame_microseconds * game.INJECTION_FRAME_OFFSET_FRACTION);
-                std::this_thread::sleep_for(std::chrono::microseconds(microseconds));
+                li.QuadPart = (Sint64)(frame_microseconds * game.INJECTION_FRAME_OFFSET_FRACTION) * -10;
+                if (SetWaitableTimer(timer, &li, 0, NULL, NULL, FALSE)) {
+                    WaitForSingleObject(timer, INFINITE);
+                }
             }
         } else {
             // Use a target frame rate
             Uint64 current_microseconds = static_cast<Uint64>(SDL_GetTicks()) * 1000ULL;
             if (current_microseconds < next_frame_microseconds) {
-                Sint64 microseconds_until_next_frame = next_frame_microseconds - current_microseconds;
-                std::this_thread::sleep_for(std::chrono::microseconds(microseconds_until_next_frame));
+                li.QuadPart = (Sint64)(next_frame_microseconds - current_microseconds) * -10;
+                if (SetWaitableTimer(timer, &li, 0, NULL, NULL, FALSE)) {
+                    WaitForSingleObject(timer, INFINITE);
+                }
             }
             next_frame_microseconds += static_cast<Uint64>(1000000.0 / target_framerate);
         }
     }
 
     // Cleanup
+
+    CloseHandle(timer);
 
     if (controller_index > -1) {
         SDL_GameControllerClose(controller);
