@@ -1,6 +1,6 @@
 System Shock 2:
   USE_VSYNC: true
-  INJECTION_FRAME_OFFSET_FRACTION: 0.5 # Only applicable if USE_VSYNC == true
+  INJECTION_FRAME_OFFSET_FRACTION: 0.4 # Only applicable if USE_VSYNC == true
   INJECTION_FRAMERATE: 120             # Only applicable if USE_VSYNC == false
 
   BUTTON_DOWN_TO_KEY_PRESS:

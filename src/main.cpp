@@ -381,9 +381,9 @@ int main(int argc, char* argv[]) {
         game_names.push_back(pair.first);
     }
 
-    // Initialize SDL
-    if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
-        printf("Error initializing SDL: %s\n", SDL_GetError());
+    // Initialize video first
+    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+        printf("Error initializing SDL video: %s\n", SDL_GetError());
         return -1;
     }
 
@@ -417,6 +417,12 @@ int main(int argc, char* argv[]) {
 
     ImGui_ImplSDL2_InitForOpenGL(window, gl_context);
     ImGui_ImplOpenGL2_Init();
+
+    // Initialize joystick
+    if (SDL_Init(SDL_INIT_JOYSTICK) != 0) {
+        printf("Error initializing SDL joystick: %s\n", SDL_GetError());
+        return -1;
+    }
 
     // Get default controller
 
