@@ -62,6 +62,8 @@ std::optional<game_config> load_game_config(const YAML::Node& node) {
         config.LOOK_SPEED_MAX_X = node["LOOK_SPEED_MAX_X"].as<float>();
         config.LOOK_SPEED_MIN_Y = node["LOOK_SPEED_MIN_Y"].as<float>();
         config.LOOK_SPEED_MAX_Y = node["LOOK_SPEED_MAX_Y"].as<float>();
+        config.LOOK_EASING_X = node["LOOK_EASING_X"].as<float>();
+        config.LOOK_EASING_Y = node["LOOK_EASING_Y"].as<float>();
 
         config.TRIGGER_DEPTH = node["TRIGGER_DEPTH"].as<std::uint16_t>();
 
