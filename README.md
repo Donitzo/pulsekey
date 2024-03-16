@@ -30,7 +30,7 @@ The duty cycle thus serves as a digital representation of the analog input's int
 
 ## Game configurations
 
-Game settings are specified within a [games.yaml](./games/games.yaml) file. Contributions to the game configurations are welcome; if you devise a well-functioning setup for a game, please consider submitting it via an issue on GitHub for potential inclusion in the default configuration list.
+Game settings are specified within a [games.yaml](./config/games.yaml) file. Contributions to the game configurations are welcome; if you devise a well-functioning setup for a game, please consider submitting it via an issue on GitHub for potential inclusion in the default configuration list.
 
 ## Building the project
 
