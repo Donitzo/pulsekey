@@ -1,4 +1,4 @@
-///////////////////////////////////////////////////////////////////////////////
+ddddd///////////////////////////////////////////////////////////////////////////////
 // Libraries
 
 #define NOMINMAX
@@ -422,13 +422,8 @@ int main(int argc, char* argv[]) {
 
     SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
 
-    if (SDL_Init(SDL_INIT_JOYSTICK) != 0) {
-        printf("Error initializing SDL joystick: %s\n", SDL_GetError());
-        return -1;
-    }
-
-    if (SDL_Init(SDL_INIT_EVENTS) != 0) {
-        printf("Error initializing SDL events: %s\n", SDL_GetError());
+    if (SDL_Init(SDL_INIT_JOYSTICK | SDL_INIT_EVENTS | SDL_INIT_TIMER) != 0) {
+        printf("Error initializing SDL joystick, events or timer: %s\n", SDL_GetError());
         return -1;
     }
 
