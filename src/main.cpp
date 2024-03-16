@@ -585,6 +585,8 @@ int main(int argc, char* argv[]) {
             } else {
                 SDL_GL_SetSwapInterval(0);
 
+                target_framerate = game.INJECTION_FRAMERATE;
+
                 next_frame_microseconds = static_cast<Uint64>(SDL_GetTicks()) * 1000ULL;
             }
         }
@@ -606,6 +608,11 @@ int main(int argc, char* argv[]) {
         SDL_GetDisplayMode(display_index, 0, &mode);
 
         ImGui::Text("Display: %s (%d Hz)", SDL_GetDisplayName(display_index), mode.refresh_rate);
+
+        // If using v-sync, the target framerate is the screen refresh rate
+        if (use_vsync) {
+            target_framerate = mode.refresh_rate;
+        }
 
         // Show framerate
         ImGui::Text("Input framerate: %.2f Hz", framerate);
