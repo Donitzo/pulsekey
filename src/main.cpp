@@ -119,6 +119,9 @@ float left_stick_move_y_acc = 0;
 float right_stick_move_x_acc = 0;
 float right_stick_move_y_acc = 0;
 
+float look_x_acc = 0;
+float look_y_acc = 0;
+
 bool left_stick_key_left_pressed = false;
 bool left_stick_key_right_pressed = false;
 bool left_stick_key_up_pressed = false;
@@ -286,17 +289,34 @@ void update_analog_input() {
         float look_speed_x = std::min(1.0f, (float)std::max(0, abs(look_x) - game.LOOK_SPEED_MIN_AXIS_VALUE) / look_ptp);
         float look_speed_y = std::min(1.0f, (float)std::max(0, abs(look_y) - game.LOOK_SPEED_MIN_AXIS_VALUE) / look_ptp);
 
-        // Calculate pixel delta
+        // Increment mouse sub-pixel movement accumulators
         float look_speed_ptp_x = game.LOOK_SPEED_MAX_X - game.LOOK_SPEED_MIN_X;
         float look_speed_ptp_y = game.LOOK_SPEED_MAX_Y - game.LOOK_SPEED_MIN_Y;
-        float delta_x = (game.LOOK_SPEED_MIN_X + look_speed_x * look_speed_ptp_x) * (look_x > 0 ? 1 : -1) / (float)target_framerate;
-        float delta_y = (game.LOOK_SPEED_MIN_Y + look_speed_y * look_speed_ptp_y) * (look_y > 0 ? 1 : -1) / (float)target_framerate;
+        if (look_speed_x != 0) {
+            look_x_acc += (game.LOOK_SPEED_MIN_X + look_speed_x * look_speed_ptp_x) * (look_x > 0 ? 1 : -1) / (float)target_framerate;
+        }
+        if (look_speed_y != 0) {
+            look_y_acc += (game.LOOK_SPEED_MIN_Y + look_speed_y * look_speed_ptp_y) * (look_y > 0 ? 1 : -1) / (float)target_framerate;
+        }
 
-        // Round delta
-        LONG dx = delta_x < 0 ? -(LONG)(-delta_x) : (LONG)delta_x;
-        LONG dy = delta_y < 0 ? -(LONG)(-delta_y) : (LONG)delta_y;
+        // Move mouse whole integers while saving sub-pixels in the accumulator
 
-        // Emulate mouse movement
+        LONG dx = (LONG)floor(look_x_acc);
+        LONG dy = (LONG)floor(look_y_acc);
+
+        look_x_acc -= dx;
+        look_y_acc -= dy;
+
+        if (look_x_acc != 0) {
+            dx = look_x_acc < 0 ? -(LONG)(-look_x_acc) : (LONG)look_x_acc;
+            look_x_acc -= dx;
+        }
+
+        if (look_y_acc != 0) {
+            dy = look_y_acc < 0 ? -(LONG)(-look_y_acc) : (LONG)look_y_acc;
+            look_y_acc -= dy;
+        }
+
         if (dx != 0 || dy != 0) {
             send_mouse_move_input(dx, dy);
         }
