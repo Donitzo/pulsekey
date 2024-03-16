@@ -418,12 +418,17 @@ int main(int argc, char* argv[]) {
     ImGui_ImplSDL2_InitForOpenGL(window, gl_context);
     ImGui_ImplOpenGL2_Init();
 
-    // Initialize joystick
-    
+    // Initialize joystick and events
+
     SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
-    
+
     if (SDL_Init(SDL_INIT_JOYSTICK) != 0) {
         printf("Error initializing SDL joystick: %s\n", SDL_GetError());
+        return -1;
+    }
+
+    if (SDL_Init(SDL_INIT_EVENTTHREAD) != 0) {
+        printf("Error initializing SDL event thread: %s\n", SDL_GetError());
         return -1;
     }
 
