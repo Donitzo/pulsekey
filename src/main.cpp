@@ -297,12 +297,12 @@ void update_analog_input(float dt) {
         // Increment mouse sub-pixel movement accumulators
         if (look_x != 0 && magnitude > 0) {
             float look_speed_ptp_x = game.LOOK_SPEED_MAX_X - game.LOOK_SPEED_MIN_X;
-            float look_speed_x = speed * (look_x / magnitude);
+            float look_speed_x = speed * (abs(look_x) / magnitude);
             look_x_acc += (game.LOOK_SPEED_MIN_X + look_speed_x * look_speed_ptp_x) * (look_x > 0 ? 1 : -1) * dt;
         }
         if (look_y != 0 && magnitude > 0) {
             float look_speed_ptp_y = game.LOOK_SPEED_MAX_Y - game.LOOK_SPEED_MIN_Y;
-            float look_speed_y = speed * (look_y / magnitude);
+            float look_speed_y = speed * (abs(look_y) / magnitude);
             look_y_acc += (game.LOOK_SPEED_MIN_Y + look_speed_y * look_speed_ptp_y) * (look_y > 0 ? 1 : -1) * dt;
         }
 
