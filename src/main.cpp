@@ -222,10 +222,10 @@ void update_analog_input() {
 
         // Increment PWM accumulators
         if (duty_cycle_x >= game.MOVE_SPEED_DUTY_CYCLE_MIN) {
-            right_stick_move_x_acc = move_x_acc + duty_cycle_x * (move_x > 0 ? 1 : -1);
+            right_stick_move_x_acc = right_stick_move_x_acc + duty_cycle_x * (move_x > 0 ? 1 : -1);
         }
         if (duty_cycle_y >= game.MOVE_SPEED_DUTY_CYCLE_MIN) {
-            right_stick_move_y_acc = move_y_acc + duty_cycle_y * (move_y > 0 ? 1 : -1);
+            right_stick_move_y_acc = right_stick_move_y_acc + duty_cycle_y * (move_y > 0 ? 1 : -1);
         }
 
         // Emulate key presses and releases
