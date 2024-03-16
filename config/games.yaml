@@ -1,6 +1,6 @@
 System Shock 2:
-  
-  # Determines if v-sync should be utilized for input injection. 
+
+  # Determines if v-sync should be utilized for input injection.
   # Enabling this synchronizes the input injection with the display vblank
   # which may provide better synchronization if the game also uses v-sync.
   # Remember to keep the PulseKey window on the relevant display.
@@ -45,7 +45,6 @@ System Shock 2:
   # Game controller button releases mapped to key down + up events.
   BUTTON_UP_TO_KEY_PRESS:
     #FROM : TO
-    4  : 9 # SDL_CONTROLLER_BUTTON_BACK -> VK_TAB
 
   # Game controller button presses mapped to mouse events (see game_config.h for mouse events).
   BUTTON_DOWN_TO_MOUSE_EVENT:
@@ -54,7 +53,7 @@ System Shock 2:
     101: 1 # SDL_CONTROLLER_TRIGGER_RIGHT -> MOUSE_LEFT_DOWN
     9  : 7 # SDL_CONTROLLER_BUTTON_LEFTSHOULDER -> MOUSE_WHEEL_UP
     10 : 6 # SDL_CONTROLLER_BUTTON_RIGHTSHOULDER -> MOUSE_WHEEL_DOWN
-  
+
   # Game controller button releases mapped to mouse events (see game_config.h for mouse events).
   BUTTON_UP_TO_MOUSE_EVENT:
     #FROM : TO
@@ -91,13 +90,13 @@ System Shock 2:
   LOOK_SPEED_MIN_AXIS_VALUE: 5000
   LOOK_SPEED_MAX_AXIS_VALUE: 32767
   # Look speed in pixels when stick equals the min axis value.
-  LOOK_SPEED_MIN_X         : 0
-  LOOK_SPEED_MIN_Y         : 0
+  LOOK_SPEED_MIN_X: 0
+  LOOK_SPEED_MIN_Y: 0
   # Look speed in pixels when stick is over the max axis value.
-  LOOK_SPEED_MAX_X         : 800
-  LOOK_SPEED_MAX_Y         : 800
+  LOOK_SPEED_MAX_X: 800
+  LOOK_SPEED_MAX_Y: 800
   # Must be positive or 0 if disabled, controls the easing curvature. >0 to 1 is a reasonable curve.
-  LOOK_EASING              : 0
+  LOOK_EASING: 0.5
 
   # Sets the trigger depth threshold for recognizing trigger presses, with values ranging from 0 to 32767.
   TRIGGER_DEPTH: 16384
