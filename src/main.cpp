@@ -307,16 +307,6 @@ void update_analog_input() {
         look_x_acc -= dx;
         look_y_acc -= dy;
 
-        if (look_x_acc != 0) {
-            dx = look_x_acc < 0 ? -(LONG)(-look_x_acc) : (LONG)look_x_acc;
-            look_x_acc -= dx;
-        }
-
-        if (look_y_acc != 0) {
-            dy = look_y_acc < 0 ? -(LONG)(-look_y_acc) : (LONG)look_y_acc;
-            look_y_acc -= dy;
-        }
-
         if (dx != 0 || dy != 0) {
             send_mouse_move_input(dx, dy);
         }
