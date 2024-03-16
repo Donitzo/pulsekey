@@ -290,22 +290,29 @@ void update_analog_input() {
         float look_speed_y = std::min(1.0f, (float)std::max(0, abs(look_y) - game.LOOK_SPEED_MIN_AXIS_VALUE) / look_ptp);
 
         // Increment mouse sub-pixel movement accumulators
-        float look_speed_ptp_x = game.LOOK_SPEED_MAX_X - game.LOOK_SPEED_MIN_X;
-        float look_speed_ptp_y = game.LOOK_SPEED_MAX_Y - game.LOOK_SPEED_MIN_Y;
         if (look_speed_x != 0) {
+            float look_speed_ptp_x = game.LOOK_SPEED_MAX_X - game.LOOK_SPEED_MIN_X;
             look_x_acc += (game.LOOK_SPEED_MIN_X + look_speed_x * look_speed_ptp_x) * (look_x > 0 ? 1 : -1) / (float)target_framerate;
         }
         if (look_speed_y != 0) {
+            float look_speed_ptp_y = game.LOOK_SPEED_MAX_Y - game.LOOK_SPEED_MIN_Y;
             look_y_acc += (game.LOOK_SPEED_MIN_Y + look_speed_y * look_speed_ptp_y) * (look_y > 0 ? 1 : -1) / (float)target_framerate;
         }
 
         // Move mouse whole integers while saving sub-pixels in the accumulator
 
-        LONG dx = (LONG)floor(look_x_acc);
-        LONG dy = (LONG)floor(look_y_acc);
+        LONG dx = 0;
+        LONG dy = 0;
 
-        look_x_acc -= dx;
-        look_y_acc -= dy;
+        if (look_x_acc != 0) {
+            dx = look_x_acc < 0 ? -(LONG)(-look_x_acc) : (LONG)look_x_acc;
+            look_x_acc -= dx;
+        }
+
+        if (look_y_acc != 0) {
+            dy = look_y_acc < 0 ? -(LONG)(-look_y_acc) : (LONG)look_y_acc;
+            look_y_acc -= dy;
+        }
 
         if (dx != 0 || dy != 0) {
             send_mouse_move_input(dx, dy);
