@@ -290,9 +290,11 @@ void update_analog_input(float dt) {
         float look_speed_y = std::min(1.0f, (float)std::max(0, abs(look_y) - game.LOOK_SPEED_MIN_AXIS_VALUE) / look_ptp);
 
         // Apply easing
-        if (game.LOOK_EASING_CURVATURE > 0) {
-            look_speed_x = pow(look_speed_x, 1 + game.LOOK_EASING_CURVATURE);
-            look_speed_y = pow(look_speed_y, 1 + game.LOOK_EASING_CURVATURE);
+        if (game.LOOK_EASING_X > 0) {
+            look_speed_x = pow(look_speed_x, 1 + game.LOOK_EASING_X);
+        }
+        if (game.LOOK_EASING_Y > 0) {
+            look_speed_y = pow(look_speed_y, 1 + game.LOOK_EASING_Y);
         }
 
         // Increment mouse sub-pixel movement accumulators

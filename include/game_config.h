@@ -53,6 +53,8 @@ struct game_config {
     float LOOK_SPEED_MAX_X;
     float LOOK_SPEED_MIN_Y;
     float LOOK_SPEED_MAX_Y;
+    float LOOK_EASING_X;
+    float LOOK_EASING_Y;
 
     std::uint16_t TRIGGER_DEPTH;
 };
