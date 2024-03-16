@@ -97,8 +97,7 @@ System Shock 2:
   LOOK_SPEED_MAX_X         : 800
   LOOK_SPEED_MAX_Y         : 800
   # Must be positive or 0 if disabled, controls the easing curvature. >0 to 1 is a reasonable curve.
-  LOOK_EASING_X            : 0
-  LOOK_EASING_Y            : 0
+  LOOK_EASING              : 0
 
   # Sets the trigger depth threshold for recognizing trigger presses, with values ranging from 0 to 32767.
   TRIGGER_DEPTH: 16384

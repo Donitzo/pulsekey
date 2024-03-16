@@ -284,26 +284,25 @@ void update_analog_input(float dt) {
         Sint16 look_x = SDL_GameControllerGetAxis(controller, game.LOOK_STICK == 0 ? SDL_CONTROLLER_AXIS_LEFTX : SDL_CONTROLLER_AXIS_RIGHTX);
         Sint16 look_y = SDL_GameControllerGetAxis(controller, game.LOOK_STICK == 0 ? SDL_CONTROLLER_AXIS_LEFTY : SDL_CONTROLLER_AXIS_RIGHTY);
 
-        // Calculate the mouse speed
+        // Calculate speed
+        float magnitude = sqrt(look_x * look_x + look_y * look_y);
         float look_ptp = (float)(game.LOOK_SPEED_MAX_AXIS_VALUE - game.LOOK_SPEED_MIN_AXIS_VALUE);
-        float look_speed_x = std::min(1.0f, (float)std::max(0, abs(look_x) - game.LOOK_SPEED_MIN_AXIS_VALUE) / look_ptp);
-        float look_speed_y = std::min(1.0f, (float)std::max(0, abs(look_y) - game.LOOK_SPEED_MIN_AXIS_VALUE) / look_ptp);
+        float speed = std::min(1.0f, std::max(0.0f, magnitude - game.LOOK_SPEED_MIN_AXIS_VALUE) / look_ptp);
 
         // Apply easing
-        if (game.LOOK_EASING_X > 0) {
-            look_speed_x = pow(look_speed_x, 1 + game.LOOK_EASING_X);
+        if (game.LOOK_EASING > 0) {
+            speed = pow(speed, 1 + game.LOOK_EASING);
         }
-        if (game.LOOK_EASING_Y > 0) {
-            look_speed_y = pow(look_speed_y, 1 + game.LOOK_EASING_Y);
-        }
-
+   
         // Increment mouse sub-pixel movement accumulators
-        if (look_speed_x != 0) {
+        if (look_x != 0 && magnitude > 0) {
             float look_speed_ptp_x = game.LOOK_SPEED_MAX_X - game.LOOK_SPEED_MIN_X;
+            float look_speed_x = speed * (look_x / magnitude);
             look_x_acc += (game.LOOK_SPEED_MIN_X + look_speed_x * look_speed_ptp_x) * (look_x > 0 ? 1 : -1) * dt;
         }
-        if (look_speed_y != 0) {
+        if (look_y != 0 && magnitude > 0) {
             float look_speed_ptp_y = game.LOOK_SPEED_MAX_Y - game.LOOK_SPEED_MIN_Y;
+            float look_speed_y = speed * (look_y / magnitude);
             look_y_acc += (game.LOOK_SPEED_MIN_Y + look_speed_y * look_speed_ptp_y) * (look_y > 0 ? 1 : -1) * dt;
         }
 
