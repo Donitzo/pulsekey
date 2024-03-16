@@ -135,7 +135,7 @@ bool right_stick_key_down_pressed = false;
 bool trigger_left_pressed = false;
 bool trigger_right_pressed = false;
 
-void update_analog_input() {
+void update_analog_input(float dt) {
     if (controller_index == -1) {
         return;
     }
@@ -292,11 +292,11 @@ void update_analog_input() {
         // Increment mouse sub-pixel movement accumulators
         if (look_speed_x != 0) {
             float look_speed_ptp_x = game.LOOK_SPEED_MAX_X - game.LOOK_SPEED_MIN_X;
-            look_x_acc += (game.LOOK_SPEED_MIN_X + look_speed_x * look_speed_ptp_x) * (look_x > 0 ? 1 : -1) / (float)target_framerate;
+            look_x_acc += (game.LOOK_SPEED_MIN_X + look_speed_x * look_speed_ptp_x) * (look_x > 0 ? 1 : -1) * dt;
         }
         if (look_speed_y != 0) {
             float look_speed_ptp_y = game.LOOK_SPEED_MAX_Y - game.LOOK_SPEED_MIN_Y;
-            look_y_acc += (game.LOOK_SPEED_MIN_Y + look_speed_y * look_speed_ptp_y) * (look_y > 0 ? 1 : -1) / (float)target_framerate;
+            look_y_acc += (game.LOOK_SPEED_MIN_Y + look_speed_y * look_speed_ptp_y) * (look_y > 0 ? 1 : -1) * dt;
         }
 
         // Move mouse whole integers while saving sub-pixels in the accumulator
@@ -465,16 +465,18 @@ int main(int argc, char* argv[]) {
 
     Uint64 next_frame_microseconds = static_cast<Uint64>(SDL_GetTicks()) * 1000ULL;
 
-    Uint64 start_counter = SDL_GetPerformanceCounter();
+    Uint64 last_update_counter = SDL_GetPerformanceCounter();
+    Uint64 last_framerate_counter = SDL_GetPerformanceCounter();
+
     float framerate = 0;
     int frames_until_calculate_framerate = FRAMERATE_AVERAGE_WINDOW_SIZE;
 
     while (running) {
         // Calculate average framerate
         if (--frames_until_calculate_framerate <= 0) {
-            Uint64 end_counter = SDL_GetPerformanceCounter();
-            float elapsed_seconds = (float)(end_counter - start_counter) / SDL_GetPerformanceFrequency();
-            start_counter = end_counter;
+            Uint64 framerate_counter = SDL_GetPerformanceCounter();
+            float elapsed_seconds = (float)(framerate_counter - last_framerate_counter) / SDL_GetPerformanceFrequency();
+            last_framerate_counter = framerate_counter;
 
             framerate = FRAMERATE_AVERAGE_WINDOW_SIZE / elapsed_seconds;
 
@@ -544,9 +546,12 @@ int main(int argc, char* argv[]) {
         }
 
         // Handle analog control emulation
+        Uint64 update_counter = SDL_GetPerformanceCounter();
         if (controller_index > -1) {
-            update_analog_input();
+            float elapsed_seconds = (float)(update_counter - last_update_counter) / SDL_GetPerformanceFrequency();
+            update_analog_input(elapsed_seconds);
         }
+        last_update_counter = update_counter;
 
         // Create new ImGui frame
 
@@ -589,8 +594,6 @@ int main(int argc, char* argv[]) {
             } else {
                 SDL_GL_SetSwapInterval(0);
 
-                target_framerate = game.INJECTION_FRAMERATE;
-
                 next_frame_microseconds = static_cast<Uint64>(SDL_GetTicks()) * 1000ULL;
             }
         }
@@ -612,11 +615,6 @@ int main(int argc, char* argv[]) {
         SDL_GetDisplayMode(display_index, 0, &mode);
 
         ImGui::Text("Display: %s (%d Hz)", SDL_GetDisplayName(display_index), mode.refresh_rate);
-
-        // If using v-sync, the target framerate is the screen refresh rate
-        if (use_vsync) {
-            target_framerate = mode.refresh_rate;
-        }
 
         // Show framerate
         ImGui::Text("Input framerate: %.2f Hz", framerate);
