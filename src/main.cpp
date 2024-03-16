@@ -421,9 +421,6 @@ int main(int argc, char* argv[]) {
     }
 
     // Get default controller
-
-    SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
-
     if (SDL_NumJoysticks() > 0) {
         controller = SDL_GameControllerOpen(0);
         controller_index = 0;
