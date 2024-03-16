@@ -26,7 +26,7 @@ The duty cycle thus serves as a digital representation of the analog input's int
 
 - [**SDL2**](https://www.libsdl.org): PulseKey leverages SDL2 for its extensive game controller support and OpenGL rendering capabilities. SDL2 is distributed under the [zlib license](https://www.libsdl.org/license.php).
 - [**ImGui**](https://github.com/ocornut/imgui): Utilized for its extremely lightweight graphical user interface, ImGui is compatible with various rendering backends, including SDL2. Licensed under the [MIT license](https://github.com/ocornut/imgui?tab=MIT-1-ov-file#readme).
-- [**yaml-cpp**](https://github.com/jbeder/yaml-cpp): This library is employed for reading game configurations from a YAML file. yaml-cpp is also under the (MIT license)[https://github.com/jbeder/yaml-cpp?tab=MIT-1-ov-file#readme]
+- [**yaml-cpp**](https://github.com/jbeder/yaml-cpp): This library is employed for reading game configurations from a YAML file. yaml-cpp is also under the [MIT license](https://github.com/jbeder/yaml-cpp?tab=MIT-1-ov-file#readme)
 
 ## Game configurations
 
