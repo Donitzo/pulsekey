@@ -427,8 +427,8 @@ int main(int argc, char* argv[]) {
         return -1;
     }
 
-    if (SDL_Init(SDL_INIT_EVENTTHREAD) != 0) {
-        printf("Error initializing SDL event thread: %s\n", SDL_GetError());
+    if (SDL_Init(SDL_INIT_EVENTS) != 0) {
+        printf("Error initializing SDL events: %s\n", SDL_GetError());
         return -1;
     }
 
