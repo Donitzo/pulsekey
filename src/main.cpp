@@ -301,18 +301,11 @@ void update_analog_input(float dt) {
 
         // Move mouse whole integers while saving sub-pixels in the accumulator
 
-        LONG dx = 0;
-        LONG dy = 0;
+        LONG dx = (LONG)look_x_acc;
+        LONG dy = (LONG)look_y_acc;
 
-        if (abs(look_x_acc) >= 1) {
-            dx = look_x_acc < 0 ? -(LONG)(-look_x_acc) : (LONG)look_x_acc;
-            look_x_acc -= dx;
-        }
-
-        if (abs(look_y_acc) >= 1) {
-            dy = look_y_acc < 0 ? -(LONG)(-look_y_acc) : (LONG)look_y_acc;
-            look_y_acc -= dy;
-        }
+        look_x_acc -= dx;
+        look_y_acc -= dy;
 
         if (dx != 0 || dy != 0) {
             send_mouse_move_input(dx, dy);
