@@ -10,6 +10,8 @@ PulseKey is a tool designed to map game controller inputs to keyboard and mouse 
 
 A key focus during PulseKey's development was exploring the feasibility of replicating analog input behaviors on keyboards through Pulse-Width Modulation. The findings indicate that while it is possible under certain conditions.
 
+Note: Keep the PulseKey window on the correct monitor if using v-sync.
+
 [![Playing System Shock 2](https://img.youtube.com/vi/Eh83MLCsoFQ/0.jpg)](https://www.youtube.com/watch?v=Eh83MLCsoFQ)
 
 ## Download

@@ -12,7 +12,7 @@ System Shock 2:
   # Defines the rate at which inputs should be injected per second.
   # A lower rate makes PWM less smooth, while a too high rate could flood the WinAPI with excessive virtual input events.
   # Only applicable if USE_VSYNC is false.
-  INJECTION_FRAMERATE: 500
+  INJECTION_FRAMERATE: 120
 
   # For virtual key-codes, see: https://learn.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
   # Convert hexadecimal values to decimal.
